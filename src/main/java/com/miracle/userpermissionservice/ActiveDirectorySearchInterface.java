@@ -25,8 +25,6 @@ public interface ActiveDirectorySearchInterface {
             while (users.hasMore()) {
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
-                String name = attr.get("cn").get(0).toString();
-                //deleteUserFromGroup(name,"Administrators");
                 System.out.println(attr.get("cn"));
                 System.out.println(attr.get("sn"));
             }

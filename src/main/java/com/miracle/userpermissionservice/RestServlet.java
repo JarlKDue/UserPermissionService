@@ -24,7 +24,12 @@ public class RestServlet {
 
     @GetMapping(value = "check_health")
     public void checkHealth(){
+        String incoming = "Test";
         System.out.println("Alive and Kicking");
+        System.out.println("Received Request to Validate " + incoming);
+        getLDAPConnectionBean.getDirContext().ifPresent(
+                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, incoming)
+        );
     }
 
 
