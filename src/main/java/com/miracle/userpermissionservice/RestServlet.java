@@ -2,10 +2,7 @@ package com.miracle.userpermissionservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Component
@@ -15,7 +12,7 @@ public class RestServlet {
     GetLDAPConnectionBean getLDAPConnectionBean;
 
     @PostMapping(value = "/update_user_permissions")
-    public void updateUserPermissions(@RequestParam String incoming){
+    public void updateUserPermissions(@RequestBody String incoming){
         System.out.println("Received Request to Validate " + incoming);
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, incoming)
