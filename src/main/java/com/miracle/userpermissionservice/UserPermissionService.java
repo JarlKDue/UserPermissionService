@@ -27,7 +27,6 @@ public class UserPermissionService {
         properties.put(Context.SECURITY_PRINCIPAL, "CN=sPROSLDAP,OU=OpenShift,OU=Servicebrugere,OU=Standard,DC=eniig,DC=org");
         properties.put(Context.SECURITY_CREDENTIALS, ldapPassword);
         properties.put(Context.PROVIDER_URL, ldapAdServer);
-//        properties.put(Context.SECURITY_AUTHENTICATION, "simple");
         properties.put("java.naming.ldap.attributes.binary", "objectSID");
 
 
