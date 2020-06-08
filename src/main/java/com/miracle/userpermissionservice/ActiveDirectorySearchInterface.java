@@ -10,16 +10,17 @@ import javax.naming.ldap.LdapContext;
 public interface ActiveDirectorySearchInterface {
 
     static boolean shouldUserBeAdmin(DirContext ctx, String ldapSearchBase, String accountName) throws NamingException {
-        String searchFilter = "(&(objectClass=user)(sAMAccountName=" + accountName + "))";
+        String searchFilter = "(objectClass=inetOrgPerson)";
 
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
         NamingEnumeration<SearchResult> results = ctx.search(ldapSearchBase, searchFilter, searchControls);
         SearchResult searchResult = null;
-        System.out.println(results.toString());
+        System.out.println(results.next().toString());
         if(results.hasMoreElements()) {
             searchResult = (SearchResult) results.nextElement();
+            System.out.println(searchResult.toString());
 
             //make sure there is not another item available, there should be only 1 match
             if(results.hasMoreElements()) {
