@@ -20,8 +20,8 @@ public class RestServlet {
     @PostMapping(value = "/update_user_permissions", consumes = "application/xml")
     public void updateUserPermissions(@RequestBody String threeScaleMessage) throws XPathExpressionException {
         XPath xPath = XPathFactory.newInstance().newXPath();
-        NodeList nodeList = (NodeList) xPath.compile("//email[1]/text()").evaluate(threeScaleMessage, XPathConstants.NODESET);
-        System.out.println("Received Request to Validate " + nodeList.item(0).getNodeValue());
+        String email = (String) xPath.compile("//email[1]/text()").evaluate(threeScaleMessage, XPathConstants.STRING);
+        System.out.println("Received Request to Validate " + email);
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
         );
