@@ -34,6 +34,7 @@ public class UserPermissionService {
         try {
             DirContext context = new InitialDirContext(properties);
             System.out.println(context);
+            System.out.println(ActiveDirectorySearchInterface.shouldUserBeAdmin(context,ldapSearchBase, "22"));
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
