@@ -15,26 +15,6 @@ public class UserPermissionService {
 
     public static void main(String[] args) throws NamingException {
         SpringApplication.run(UserPermissionService.class, args);
-        final String ldapAdServer = "ldap://eniig.org:389";
-        final String ldapSearchBase = "OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org";
 
-        final String ldapUsername = "OpenShift";
-        final String ldapPassword = "Such$Y9t2RiBicuQ!p*j";
-
-        Properties properties = new Properties();
-        properties.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        properties.put(Context.SECURITY_PRINCIPAL, "CN=sPROSLDAP,OU=OpenShift,OU=Servicebrugere,OU=Standard,DC=eniig,DC=org");
-        properties.put(Context.SECURITY_CREDENTIALS, ldapPassword);
-        properties.put(Context.SECURITY_PROTOCOL, "simple");
-        properties.put(Context.PROVIDER_URL, ldapAdServer);
-        properties.put("java.naming.ldap.attributes.binary", "objectSID");
-
-        try {
-            DirContext context = new InitialDirContext(properties);
-            System.out.println(context);
-            System.out.println(ActiveDirectorySearchInterface.shouldUserBeAdmin(context,ldapSearchBase, "3SCALE Admin"));
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
