@@ -11,11 +11,11 @@ public class RestServlet {
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
-    @PostMapping(value = "/update_user_permissions")
-    public void updateUserPermissions(@RequestBody String incoming){
-        System.out.println("Received Request to Validate " + incoming);
+    @PostMapping(value = "/update_user_permissions", consumes = "application/xml")
+    public void updateUserPermissions(@RequestBody ThreeScaleMessage threeScaleMessage){
+        System.out.println("Received Request to Validate " + threeScaleMessage.getThreeScaleUser().getEmail());
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, incoming)
+                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage.getThreeScaleUser().getEmail())
         );
     }
 
