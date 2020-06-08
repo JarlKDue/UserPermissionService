@@ -30,9 +30,7 @@ public class UserPermissionService {
         properties.put("java.naming.ldap.attributes.binary", "objectSID");
 
 
-        LdapContext ctx = new InitialLdapContext();
         DirContext context = new InitialDirContext(properties);
-    ActiveDirectorySearchInterface.shouldUserBeAdmin(ctx, ldapSearchBase, "test");
-
+        ActiveDirectorySearchInterface.shouldUserBeAdmin(context, ldapSearchBase, "test");
     }
 }
