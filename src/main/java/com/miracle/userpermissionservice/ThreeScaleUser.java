@@ -5,8 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ThreeScaleUser {
 
-    public int id;
-    public String email;
+    private String email;
 
     public void setEmail(String email){
         this.email = email;
