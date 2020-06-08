@@ -17,7 +17,7 @@ public interface ActiveDirectorySearchInterface {
 
         NamingEnumeration<SearchResult> results = ctx.search(ldapSearchBase, searchFilter, searchControls);
         SearchResult searchResult = null;
-        System.out.println(results.next().toString());
+        System.out.println(results.toString());
         if(results.hasMoreElements()) {
             searchResult = (SearchResult) results.nextElement();
 
