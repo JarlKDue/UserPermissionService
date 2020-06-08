@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Hashtable;
 import java.util.Properties;
+import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
@@ -29,8 +30,11 @@ public class UserPermissionService {
         properties.put(Context.PROVIDER_URL, ldapAdServer);
         properties.put("java.naming.ldap.attributes.binary", "objectSID");
 
-
-        DirContext context = new InitialDirContext(properties);
-        ActiveDirectorySearchInterface.shouldUserBeAdmin(context, ldapSearchBase, "test");
+        try {
+            DirContext context = new InitialDirContext(properties);
+            System.out.println(context);
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
