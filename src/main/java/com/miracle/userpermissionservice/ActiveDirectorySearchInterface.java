@@ -22,10 +22,9 @@ public interface ActiveDirectorySearchInterface {
             NamingEnumeration<SearchResult> results = ctx.search(ldapSearchBase, searchFilter, searchControls);
             SearchResult searchResult = null;
             if(results.hasMoreElements()) {
-                searchResult = (SearchResult) results.nextElement();
+                searchResult = results.nextElement();
                 System.out.println(searchResult.toString());
 
-                //make sure there is not another item available, there should be only 1 match
                 if(results.hasMoreElements()) {
                     System.err.println("Matched multiple users for the accountName: " + accountName);
                     return false;

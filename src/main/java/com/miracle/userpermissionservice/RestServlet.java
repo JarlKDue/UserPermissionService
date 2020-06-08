@@ -14,7 +14,7 @@ public class RestServlet {
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
-    @PostMapping(value = "/update_user_permissions", consumes = "applicat/xml")
+    @PostMapping(value = "/update_user_permissions")
     public void updateUserPermissions(@RequestParam String incoming){
         System.out.println("Received Request to Validate " + incoming);
         getLDAPConnectionBean.getDirContext().ifPresent(
