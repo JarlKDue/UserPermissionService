@@ -1,5 +1,6 @@
 package com.miracle.userpermissionservice;
 
+import jdk.internal.org.xml.sax.InputSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.io.StringReader;
 
 @RestController
 @Component
@@ -20,7 +22,9 @@ public class RestServlet {
     @PostMapping(value = "/update_user_permissions", consumes = "application/xml")
     public void updateUserPermissions(@RequestBody String threeScaleMessage) throws XPathExpressionException {
         XPath xPath = XPathFactory.newInstance().newXPath();
-        String email = (String) xPath.compile("//email[1]/text()").evaluate(threeScaleMessage, XPathConstants.STRING);
+        InputSource inputXML = new InputSource( new StringReader( threeScaleMessage ) );
+
+        String email = (String) xPath.compile("//email[1]/text()").evaluate(inputXML, XPathConstants.STRING);
         System.out.println("Received Request to Validate " + email);
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
