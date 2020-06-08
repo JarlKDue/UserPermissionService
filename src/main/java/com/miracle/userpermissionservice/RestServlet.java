@@ -21,7 +21,7 @@ public class RestServlet {
     public void updateUserPermissions(@RequestBody String threeScaleMessage) throws XPathExpressionException {
         XPath xPath = XPathFactory.newInstance().newXPath();
         NodeList nodeList = (NodeList) xPath.compile("//email[1]/text()").evaluate(threeScaleMessage, XPathConstants.NODESET);
-        System.out.println("Received Request to Validate " + nodeList.item(0).toString());
+        System.out.println("Received Request to Validate " + nodeList.item(0).getNodeValue());
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
         );
