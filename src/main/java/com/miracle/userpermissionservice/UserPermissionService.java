@@ -32,6 +32,7 @@ public class UserPermissionService {
 
 
     LdapContext ctx = new InitialLdapContext();
+    ActiveDirectorySearchInterface.shouldUserBeAdmin(ctx, ldapSearchBase, "test");
 
     }
 }
