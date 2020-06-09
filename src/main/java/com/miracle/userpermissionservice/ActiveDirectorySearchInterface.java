@@ -1,14 +1,12 @@
 package com.miracle.userpermissionservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import javax.naming.ldap.LdapContext;
+import java.util.List;
 
 public interface ActiveDirectorySearchInterface {
 
@@ -61,5 +59,27 @@ public interface ActiveDirectorySearchInterface {
 //
 //        System.out.println("Returning True!!");
         return true;
+    }
+
+    static List<Object> getMembersOf3ScaleGroups(DirContext ctx){
+        String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=f_3SCALE_API_Administrator,OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
+        String[] reqAtt = { "email"};
+        SearchControls controls = new SearchControls();
+        controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        controls.setReturningAttributes(reqAtt);
+        try {
+            System.out.println("Trying to Fetch Users");
+            NamingEnumeration users = ctx.search("OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", searchFilter, controls);
+            SearchResult result = null;
+            System.out.println(users.hasMore());
+            while (users.hasMore()) {
+                result = (SearchResult) users.next();
+                Attributes attr = result.getAttributes();
+                System.out.println(attr.get("email"));
+            }
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

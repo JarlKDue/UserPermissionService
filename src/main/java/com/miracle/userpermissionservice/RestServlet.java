@@ -2,7 +2,6 @@ package com.miracle.userpermissionservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -18,6 +17,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.rmi.activation.ActivationID;
 
 @Component
 @RestController
@@ -43,7 +43,6 @@ public class RestServlet {
         System.out.println("Alive and Kicking");
     }
 
-
     public String fetchUserNameFromXMLSchema(String xml, String expression){
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -58,6 +57,14 @@ public class RestServlet {
             e.printStackTrace();
         }
         return "Could not parse";
+    }
+
+    @GetMapping("/sync_users")
+    public void syncUsers(){
+        //Fetch Users from AD By Group
+        getLDAPConnectionBean.getDirContext().ifPresent(
+                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context)
+        ));
     }
 
 }
