@@ -71,9 +71,8 @@ public interface ActiveDirectorySearchInterface {
             System.out.println("Trying to Fetch Users");
             NamingEnumeration users = ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
             SearchResult result = null;
-            System.out.println(users.hasMore());
+            System.out.println(users.toString());
             while (users.hasMore()) {
-                System.out.println(users.next().toString());
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
                 System.out.println(attr.get("email"));
