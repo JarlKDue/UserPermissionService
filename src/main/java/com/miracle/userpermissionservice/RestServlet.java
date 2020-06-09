@@ -35,6 +35,7 @@ public class RestServlet {
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
         );
+        System.out.println(ThreeScaleApiInterface.setUserToAdmin());
     }
 
     @GetMapping(value = "check_health")
