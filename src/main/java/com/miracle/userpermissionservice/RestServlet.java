@@ -63,8 +63,11 @@ public class RestServlet {
     public void syncUsers(){
         //Fetch Users from AD By Group
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context)
+                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Administrator")
         ));
+        getLDAPConnectionBean.getDirContext().ifPresent(
+                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager")
+                ));
     }
 
 }

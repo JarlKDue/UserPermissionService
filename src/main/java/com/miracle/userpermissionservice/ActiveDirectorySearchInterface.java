@@ -20,7 +20,7 @@ public interface ActiveDirectorySearchInterface {
 
         try {
             System.out.println("Trying to Fetch Users");
-            NamingEnumeration users = ctx.search("OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", searchFilter, controls);
+            NamingEnumeration users = ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.hasMore());
             while (users.hasMore()) {
@@ -61,15 +61,15 @@ public interface ActiveDirectorySearchInterface {
         return true;
     }
 
-    static List<Object> getMembersOf3ScaleGroups(DirContext ctx){
-        String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=f_3SCALE_API_Administrator,OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
+    static List<Object> getMembersOf3ScaleGroups(DirContext ctx, String group){
+        String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
         String[] reqAtt = { "email"};
         SearchControls controls = new SearchControls();
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         controls.setReturningAttributes(reqAtt);
         try {
             System.out.println("Trying to Fetch Users");
-            NamingEnumeration users = ctx.search("OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", searchFilter, controls);
+            NamingEnumeration users = ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.hasMore());
             while (users.hasMore()) {
