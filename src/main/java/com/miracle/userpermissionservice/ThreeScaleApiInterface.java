@@ -15,10 +15,10 @@ public interface ThreeScaleApiInterface {
 
 
 
-    static boolean setUserToAdmin(){
+    static boolean setUserToAdmin(String userId){
         try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 
-            HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/10/admin.xml");
+            HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/admin.xml");
             request.setHeader("access_token", threeScaleAccessToken);
             HttpResponse response = client.execute(request);
             System.out.println(response);

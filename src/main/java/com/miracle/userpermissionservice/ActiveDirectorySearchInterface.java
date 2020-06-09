@@ -13,6 +13,7 @@ import javax.naming.ldap.LdapContext;
 public interface ActiveDirectorySearchInterface {
 
     static boolean shouldUserBeAdmin(DirContext ctx, String accountName) {
+        System.out.println("Checking if User Should be Admin");
         String searchFilter = "(objectClass=Person)";
         String[] reqAtt = { "sAMAccountName"};
         SearchControls controls = new SearchControls();

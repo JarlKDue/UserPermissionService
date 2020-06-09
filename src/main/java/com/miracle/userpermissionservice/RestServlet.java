@@ -33,9 +33,9 @@ public class RestServlet {
         System.out.println("Received Request to Validate " + email);
         System.out.println("Received Request to Validate " + userId);
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, email)
+                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.shouldUserBeAdmin(context, email))
         );
-        System.out.println(ThreeScaleApiInterface.setUserToAdmin());
+        System.out.println( "Should user be Admin? " + ThreeScaleApiInterface.setUserToAdmin(userId));
     }
 
     @GetMapping("/check_health")

@@ -16,9 +16,7 @@ public class GetLDAPConnectionBean {
 
     public Optional<DirContext> getDirContext() {
         final String ldapAdServer = "ldap://eniig.org:389";
-
         final String ldapPassword = "Such$Y9t2RiBicuQ!p*j";
-
         Properties properties = new Properties();
         properties.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         properties.put(Context.SECURITY_PRINCIPAL, "CN=sPROSLDAP,OU=OpenShift,OU=Servicebrugere,OU=Standard,DC=eniig,DC=org");
