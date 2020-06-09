@@ -25,6 +25,8 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface ThreeScaleApiInterface {
 
@@ -61,7 +63,8 @@ public interface ThreeScaleApiInterface {
             request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
             System.out.println(response.getLastHeader("Location"));
-            String userId = "userIdFromResponse";
+            String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
+            System.out.println(userId);
         } catch (NoSuchAlgorithmException | KeyStoreException | IOException | URISyntaxException | KeyManagementException e) {
             e.printStackTrace();
         }
@@ -90,7 +93,7 @@ public interface ThreeScaleApiInterface {
                          HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
             request.setHeader("access_token", threeScaleAccessToken);
             HttpResponse response = httpClient.execute(request);
-            System.out.println(response.getLastHeader("Location"));
+            System.out.println(response.getLastHeader("Location").getValue().s);
             return true;
 
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
@@ -136,5 +139,11 @@ public interface ThreeScaleApiInterface {
                 .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
                 .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                 .build();
+    }
+
+    static String extractUserIdFromLocation(String location){
+        Pattern p = Pattern.compile("/id=(.*?)/&");
+        Matcher m = p.matcher(location);
+        return m.group(1);
     }
 }
