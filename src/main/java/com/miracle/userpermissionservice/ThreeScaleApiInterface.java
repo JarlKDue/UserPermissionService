@@ -1,23 +1,30 @@
 package com.miracle.userpermissionservice;
 
 
+import com.sun.jndi.toolkit.url.Uri;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.web.util.UriBuilder;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface ThreeScaleApiInterface {
@@ -49,14 +56,21 @@ public interface ThreeScaleApiInterface {
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                     .build();
             HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
-            request.setHeader("access_token", threeScaleAccessToken);
-            request.setHeader("email", email);
-            request.setHeader("username", email);
-            request.setHeader("password", "password");
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .addParameter("email", email)
+                    .addParameter("username", email)
+                    .addParameter("password", "password")
+                    .build();
+            request.setURI(uri);
+//            request.setHeader("access_token", threeScaleAccessToken);
+//            request.setHeader("email", email);
+//            request.setHeader("username", email);
+//            request.setHeader("password", "password");
             HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             String userId = "userIdFromResponse";
-        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
 //        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
