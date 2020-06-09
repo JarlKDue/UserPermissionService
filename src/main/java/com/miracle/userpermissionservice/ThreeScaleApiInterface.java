@@ -22,7 +22,7 @@ import java.util.List;
 
 public interface ThreeScaleApiInterface {
 
-    static String threeScaleUrl = "http://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
+    static String threeScaleUrl = "https://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
     static String threeScaleAccessToken = "npuy3x6a0h6his7o";
 
 
