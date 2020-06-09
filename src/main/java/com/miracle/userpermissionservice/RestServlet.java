@@ -25,7 +25,6 @@ import java.io.StringReader;
 @Component
 @Consumes("application/xml")
 @Path("/")
-@RestController
 public class RestServlet {
 
     @Autowired
