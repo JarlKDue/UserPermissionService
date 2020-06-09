@@ -26,6 +26,7 @@ public interface ActiveDirectorySearchInterface {
             while (users.hasMore()) {
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
+                System.out.println(attr);
                 System.out.println(attr.get("sAMAccountName"));
             }
         } catch (NamingException e) {
