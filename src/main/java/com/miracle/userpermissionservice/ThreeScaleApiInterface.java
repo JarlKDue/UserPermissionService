@@ -2,16 +2,27 @@ package com.miracle.userpermissionservice;
 
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
+
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface ThreeScaleApiInterface {
 
-    static String threeScaleUrl = "https://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
+    static String threeScaleUrl = "http://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
     static String threeScaleAccessToken = "npuy3x6a0h6his7o";
 
 
@@ -31,19 +42,36 @@ public interface ThreeScaleApiInterface {
         return true;    }
 
     static String createProviderUser(String email){
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+        try {
+            HttpClient httpClient = HttpClients
+                    .custom()
+                    .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
+                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                    .build();
             HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
             request.setHeader("access_token", threeScaleAccessToken);
             request.setHeader("email", email);
             request.setHeader("username", email);
             request.setHeader("password", "password");
-            HttpResponse response = client.execute(request);
+            HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             String userId = "userIdFromResponse";
-            return userId;
-        } catch (IOException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
             e.printStackTrace();
         }
+//        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+//            HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
+//            request.setHeader("access_token", threeScaleAccessToken);
+//            request.setHeader("email", email);
+//            request.setHeader("username", email);
+//            request.setHeader("password", "password");
+//            HttpResponse response = httpClient.execute(request);
+//            System.out.println(response);
+//            String userId = "userIdFromResponse";
+//            return userId;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return "not created";
     }
 
