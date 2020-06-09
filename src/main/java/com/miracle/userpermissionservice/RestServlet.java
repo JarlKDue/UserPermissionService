@@ -27,17 +27,11 @@ public class RestServlet {
     GetLDAPConnectionBean getLDAPConnectionBean;
 
     @PostMapping(value = "/update_user_permissions", consumes = "application/xml")
-    public void updateUserPermissions(@RequestBody String threeScaleMessage) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(new InputSource(new StringReader(threeScaleMessage)));
-        System.out.println(document.getXmlVersion());
-
-        XPath xPath = XPathFactory.newInstance().newXPath();
-        String expression = "//email[1]/text()";
-        Node node = (Node) xPath.compile(expression).evaluate(document, XPathConstants.NODE);
-        System.out.println(node.getNodeValue());
-        System.out.println("Received Request to Validate " + node.getNodeValue());
+    public void updateUserPermissions(@RequestBody String threeScaleMessage)  {
+        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
+        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
+        System.out.println("Received Request to Validate " + email);
+        System.out.println("Received Request to Validate " + userId);
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
         );
@@ -54,7 +48,20 @@ public class RestServlet {
     }
 
 
-    public String fetchUserNameFromXMLSchema(String xml){
-        return xml;
+    public String fetchUserNameFromXMLSchema(String xml, String expression){
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(new InputSource(new StringReader(xml)));
+            System.out.println(document.getXmlVersion());
+
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            Node node = (Node) xPath.compile(expression).evaluate(document, XPathConstants.NODE);
+            return node.getNodeValue();
+        } catch (ParserConfigurationException | IOException | XPathExpressionException | SAXException e) {
+            e.printStackTrace();
+        }
+        return "Could not parse";
     }
+
 }
