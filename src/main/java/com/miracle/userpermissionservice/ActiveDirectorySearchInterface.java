@@ -13,8 +13,8 @@ import javax.naming.ldap.LdapContext;
 public interface ActiveDirectorySearchInterface {
 
     static boolean shouldUserBeAdmin(DirContext ctx, String accountName) {
-        String searchFilter = "(objectClass=samAccountName)";
-        String[] reqAtt = { "cn", "sn" };
+        String searchFilter = "(objectClass=inetOrgPerson)";
+        String[] reqAtt = { "sAMAccountName"};
         SearchControls controls = new SearchControls();
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         controls.setReturningAttributes(reqAtt);
@@ -25,8 +25,7 @@ public interface ActiveDirectorySearchInterface {
             while (users.hasMore()) {
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
-                System.out.println(attr.get("cn"));
-                System.out.println(attr.get("sn"));
+                System.out.println(attr.get("sAMAccountName"));
             }
         } catch (NamingException e) {
             e.printStackTrace();
