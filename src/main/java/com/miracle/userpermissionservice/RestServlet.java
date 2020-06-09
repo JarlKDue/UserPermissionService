@@ -17,7 +17,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
-import java.rmi.activation.ActivationID;
+import java.util.List;
 
 @Component
 @RestController
@@ -67,13 +67,12 @@ public class RestServlet {
 
     @GetMapping("/sync_users")
     public void syncUsers(){
-        //Fetch Users from AD By Group
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_Administrator")
-        ));
+                context ->ThreeScaleApiInterface.syncAdminProviders(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_Administrator"))
+        );
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager")
-                ));
+                context -> ThreeScaleApiInterface.syncManagerProviderUsers(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager"))
+                );
     }
 
 }

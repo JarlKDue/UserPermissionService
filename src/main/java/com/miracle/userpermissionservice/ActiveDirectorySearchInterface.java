@@ -6,6 +6,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ActiveDirectorySearchInterface {
@@ -61,7 +62,8 @@ public interface ActiveDirectorySearchInterface {
         return true;
     }
 
-    static List<Object> getMembersOf3ScaleGroups(DirContext ctx, String group){
+    static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
+        List<String> memberEmails = new ArrayList<>();
         String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
         String[] reqAtt = { "email"};
         SearchControls controls = new SearchControls();
@@ -74,13 +76,12 @@ public interface ActiveDirectorySearchInterface {
             System.out.println(users.toString());
             while (users.hasMore()) {
                 System.out.println(users.next().toString());
-//                result = (SearchResult) users.next();
-//                Attributes attr = result.getAttributes();
-//                System.out.println(attr.get("email"));
+                //Add user email to list, return list.
+
             }
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        return null;
+        return memberEmails;
     }
 }
