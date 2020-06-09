@@ -26,7 +26,6 @@ public interface ActiveDirectorySearchInterface {
             while (users.hasMore()) {
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
-                System.out.println(attr);
                 System.out.println(attr.get("sAMAccountName"));
             }
         } catch (NamingException e) {
@@ -74,6 +73,7 @@ public interface ActiveDirectorySearchInterface {
             SearchResult result = null;
             System.out.println(users.hasMore());
             while (users.hasMore()) {
+                System.out.println(users.next().toString());
                 result = (SearchResult) users.next();
                 Attributes attr = result.getAttributes();
                 System.out.println(attr.get("email"));
