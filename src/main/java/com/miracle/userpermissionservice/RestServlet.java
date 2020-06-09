@@ -2,6 +2,7 @@ package com.miracle.userpermissionservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -24,6 +25,7 @@ import java.io.StringReader;
 
 @Component
 @Consumes("application/xml")
+@Service
 public class RestServlet {
 
     @Autowired
