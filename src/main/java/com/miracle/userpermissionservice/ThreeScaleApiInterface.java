@@ -24,7 +24,6 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
 
 public interface ThreeScaleApiInterface {
@@ -50,11 +49,8 @@ public interface ThreeScaleApiInterface {
 
     static String createProviderUser(String email){
         try {
-            HttpClient httpClient = HttpClients
-                    .custom()
-                    .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
-                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                    .build();
+            HttpClient httpClient = getHttpClient();
+
             HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
@@ -63,74 +59,58 @@ public interface ThreeScaleApiInterface {
                     .addParameter("password", "TestPassword1234")
                     .build();
             request.setURI(uri);
-//            request.setHeader("access_token", threeScaleAccessToken);
-//            request.setHeader("email", email);
-//            request.setHeader("username", email);
-//            request.setHeader("password", "password");
             HttpResponse response = httpClient.execute(request);
-            System.out.println(response);
+            System.out.println(response.getLastHeader("Location"));
             String userId = "userIdFromResponse";
-        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException | URISyntaxException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException | IOException | URISyntaxException | KeyManagementException e) {
             e.printStackTrace();
         }
-//        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-//            HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
-//            request.setHeader("access_token", threeScaleAccessToken);
-//            request.setHeader("email", email);
-//            request.setHeader("username", email);
-//            request.setHeader("password", "password");
-//            HttpResponse response = httpClient.execute(request);
-//            System.out.println(response);
-//            String userId = "userIdFromResponse";
-//            return userId;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return "not created";
     }
 
-    static boolean setUserToAdmin(String userId){
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
+    static boolean setUserToAdmin(String userId) {
 
+        try {
+            HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/admin.xml");
             request.setHeader("access_token", threeScaleAccessToken);
-            HttpResponse response = client.execute(request);
+            HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             return true;
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
         return false;
     }
 
     static boolean activateAccount(String userId){
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-
-            HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
+        try {
+            HttpClient httpClient = getHttpClient();
+                         HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
             request.setHeader("access_token", threeScaleAccessToken);
-            HttpResponse response = client.execute(request);
-            System.out.println(response);
+            HttpResponse response = httpClient.execute(request);
+            System.out.println(response.getLastHeader("Location"));
             return true;
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
             e.printStackTrace();
         }
         return false;
     }
 
     static boolean updateUserMemberPermissions(String userId){
-        try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
-
+        try {
+            HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/permissions.xml");
             request.setHeader("access_token", threeScaleAccessToken);
             request.setHeader("allowed_service_ids", "allowed_service_ids[]");
             request.setHeader("allowed_sections", threeScaleAccessToken);
-            HttpResponse response = client.execute(request);
+            HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             return true;
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
         return false;
@@ -148,5 +128,13 @@ public interface ThreeScaleApiInterface {
             syncManagerProviderUser(email);
         }
         return true;
+    }
+
+    static HttpClient getHttpClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+        return HttpClients
+                .custom()
+                .setSSLContext(new SSLContextBuilder().loadTrustMaterial(null, TrustAllStrategy.INSTANCE).build())
+                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                .build();
     }
 }
