@@ -2,7 +2,7 @@ package com.miracle.userpermissionservice;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="object")
 public class ThreeScaleUser {
 
     private String email;

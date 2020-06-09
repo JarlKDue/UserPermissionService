@@ -2,13 +2,13 @@ package com.miracle.userpermissionservice;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class ThreeScaleMessage {
+@XmlRootElement(name="event")
+public class ThreeScaleEvent {
 
     private String type;
     private String action;
     private ThreeScaleUser threeScaleUser;
-    public ThreeScaleMessage(){};
+    public ThreeScaleEvent(){};
 
     public void setType(String type){
         this.type =type;

@@ -5,10 +5,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,26 +22,28 @@ import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
 
-@RestController
 @Component
+@Consumes("application/xml")
 public class RestServlet {
 
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
-    @PostMapping(value = "/update_user_permissions", consumes = "application/xml")
-    public void updateUserPermissions(@RequestBody String threeScaleMessage)  {
-        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
-        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
-        System.out.println("Received Request to Validate " + email);
-        System.out.println("Received Request to Validate " + userId);
+    @Path(value = "/update_user_permissions")
+    @POST
+    public void updateUserPermissions(@RequestBody ThreeScaleEvent threeScaleEvent)  {
+//        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
+//        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
+//        System.out.println("Received Request to Validate " + email);
+//        System.out.println("Received Request to Validate " + userId);
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleMessage)
+                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleEvent.getThreeScaleUser().getEmail())
         );
         System.out.println(ThreeScaleApiInterface.setUserToAdmin());
     }
 
-    @GetMapping(value = "check_health")
+    @Path(value = "check_health")
+    @GET()
     public void checkHealth(){
         String incoming = "Test";
         System.out.println("Alive and Kicking");
