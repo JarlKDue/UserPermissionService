@@ -24,12 +24,14 @@ import java.io.StringReader;
 
 @Component
 @Consumes("application/xml")
+@Path("/")
+@RestController
 public class RestServlet {
 
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
-    @Path(value = "/update_user_permissions")
+    @Path(value = "update_user_permissions")
     @POST
     public void updateUserPermissions(@RequestBody ThreeScaleEvent threeScaleEvent)  {
 //        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
