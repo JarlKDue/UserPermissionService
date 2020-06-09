@@ -93,7 +93,7 @@ public interface ThreeScaleApiInterface {
                          HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
             request.setHeader("access_token", threeScaleAccessToken);
             HttpResponse response = httpClient.execute(request);
-            System.out.println(response.getLastHeader("Location").getValue().s);
+            System.out.println(response.getLastHeader("Location").getValue());
             return true;
 
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
