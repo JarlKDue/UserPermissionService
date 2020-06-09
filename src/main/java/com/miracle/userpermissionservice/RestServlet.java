@@ -25,14 +25,13 @@ import java.io.StringReader;
 
 @Component
 @Consumes("application/xml")
-@Service
 public class RestServlet {
 
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
     @POST
-    @Path(value = "/update_user_permissions")
+    @Path("/update_user_permissions")
     public void updateUserPermissions(@RequestBody ThreeScaleEvent threeScaleEvent)  {
 //        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
 //        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
@@ -44,8 +43,8 @@ public class RestServlet {
         System.out.println(ThreeScaleApiInterface.setUserToAdmin());
     }
 
-    @GET()
-    @Path(value = "/check_health")
+    @GET
+    @Path("/check_health")
     public void checkHealth(){
         String incoming = "Test";
         System.out.println("Alive and Kicking");
