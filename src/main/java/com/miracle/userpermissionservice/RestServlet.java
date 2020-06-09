@@ -9,10 +9,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,14 +20,13 @@ import java.io.IOException;
 import java.io.StringReader;
 
 @Component
-@Consumes("application/xml")
+@RestController
 public class RestServlet {
 
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
-    @POST
-    @Path("/update_user_permissions")
+    @PostMapping("/update_user_permissions")
     public void updateUserPermissions(@RequestBody ThreeScaleEvent threeScaleEvent)  {
 //        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
 //        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
@@ -43,8 +38,7 @@ public class RestServlet {
         System.out.println(ThreeScaleApiInterface.setUserToAdmin());
     }
 
-    @GET
-    @Path("/check_health")
+    @GetMapping("/check_health")
     public void checkHealth(){
         String incoming = "Test";
         System.out.println("Alive and Kicking");
