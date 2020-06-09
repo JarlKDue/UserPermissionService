@@ -73,9 +73,10 @@ public interface ActiveDirectorySearchInterface {
             SearchResult result = null;
             System.out.println(users.toString());
             while (users.hasMore()) {
-                result = (SearchResult) users.next();
-                Attributes attr = result.getAttributes();
-                System.out.println(attr.get("email"));
+                System.out.println(users.next().toString());
+//                result = (SearchResult) users.next();
+//                Attributes attr = result.getAttributes();
+//                System.out.println(attr.get("email"));
             }
         } catch (NamingException e) {
             e.printStackTrace();

@@ -43,6 +43,12 @@ public class RestServlet {
         System.out.println("Alive and Kicking");
     }
 
+    @GetMapping("/create_admin")
+    public void createAdmin(){
+        System.out.println("Creating Admin");
+        ThreeScaleApiInterface.syncAdminProviderUser("test@test.dk");
+    }
+
     public String fetchUserNameFromXMLSchema(String xml, String expression){
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
