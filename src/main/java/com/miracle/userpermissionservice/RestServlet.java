@@ -27,25 +27,20 @@ public class RestServlet {
     GetLDAPConnectionBean getLDAPConnectionBean;
 
     @PostMapping("/update_user_permissions")
-    public void updateUserPermissions(@RequestBody ThreeScaleEvent threeScaleEvent)  {
-//        String email = fetchUserNameFromXMLSchema(threeScaleMessage, "//email[1]/text()");
-//        String userId = fetchUserNameFromXMLSchema(threeScaleMessage, "//users/user/id/text()");
-//        System.out.println("Received Request to Validate " + email);
-//        System.out.println("Received Request to Validate " + userId);
+    public void updateUserPermissions(@RequestBody String threeScaleEvent)  {
+        String email = fetchUserNameFromXMLSchema(threeScaleEvent, "//email[1]/text()");
+        String userId = fetchUserNameFromXMLSchema(threeScaleEvent, "//users/user/id/text()");
+        System.out.println("Received Request to Validate " + email);
+        System.out.println("Received Request to Validate " + userId);
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, threeScaleEvent.getThreeScaleUser().getEmail())
+                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, email)
         );
         System.out.println(ThreeScaleApiInterface.setUserToAdmin());
     }
 
     @GetMapping("/check_health")
     public void checkHealth(){
-        String incoming = "Test";
         System.out.println("Alive and Kicking");
-        System.out.println("Received Request to Validate " + incoming);
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ActiveDirectorySearchInterface.shouldUserBeAdmin(context, incoming)
-        );
     }
 
 
