@@ -119,8 +119,8 @@ public interface ThreeScaleApiInterface {
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/permissions.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
-                    .addParameter("allowed_service_ids[]", URLEncoder.encode(""))
-                    .addParameter("allowed_sections[]", URLEncoder.encode(java.util.Arrays.toString( permissions ) , "UTF-8"))
+                    .addParameter("allowed_service_ids[]", "8")
+                    .addParameter("allowed_sections[]", "portal, finance, settings, partners, monitoring, plans, policy_registry")
                     .build();
             request.setURI(uri);
             System.out.println(uri);
