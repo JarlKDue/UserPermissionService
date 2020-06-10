@@ -17,7 +17,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.List;
 
 @Component
 @RestController
@@ -25,18 +24,6 @@ public class RestServlet {
 
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
-
-    @PostMapping("/update_user_permissions")
-    public void updateUserPermissions(@RequestBody String threeScaleEvent)  {
-        String email = fetchUserNameFromXMLSchema(threeScaleEvent, "//email[1]/text()");
-        String userId = fetchUserNameFromXMLSchema(threeScaleEvent, "//users/user/id/text()");
-        System.out.println("Received Request to Validate " + email);
-        System.out.println("Received Request to Validate " + userId);
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> System.out.println("Did the search run " + ActiveDirectorySearchInterface.shouldUserBeAdmin(context, email))
-        );
-        System.out.println( "Should user be Admin? " + ThreeScaleApiInterface.setUserToAdmin(userId));
-    }
 
     @GetMapping("/check_health")
     public void checkHealth(){

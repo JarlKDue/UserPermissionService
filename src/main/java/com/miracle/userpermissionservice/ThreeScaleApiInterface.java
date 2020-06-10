@@ -59,7 +59,7 @@ public interface ThreeScaleApiInterface {
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("email", email)
-                    .addParameter("username", "TestUsername")
+                    .addParameter("username", email)
                     .addParameter("password", "TestPassword1234")
                     .build();
             request.setURI(uri);
