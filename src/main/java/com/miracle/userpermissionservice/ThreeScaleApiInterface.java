@@ -116,9 +116,9 @@ public interface ThreeScaleApiInterface {
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("allowed_service_ids[]", "8")
                     .addParameter("allowed_sections[]", "finance, settings, partners")
-                    .addParameter("Content-Type", "application/x-www-form-urlencoded")
                     .build();
             request.setURI(uri);
+            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
             System.out.println(uri);
             HttpResponse response = httpClient.execute(request);
             System.out.println(response);
