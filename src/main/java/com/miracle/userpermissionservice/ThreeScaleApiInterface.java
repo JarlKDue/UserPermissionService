@@ -123,6 +123,7 @@ public interface ThreeScaleApiInterface {
                     .addParameter(URLEncoder.encode("allowed_sections[]"), URLEncoder.encode(java.util.Arrays.toString( permissions ) , "UTF-8"))
                     .build();
             request.setURI(uri);
+            System.out.println(uri);
             HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             return true;
