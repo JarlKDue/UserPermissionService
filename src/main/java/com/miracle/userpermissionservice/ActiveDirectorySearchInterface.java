@@ -58,8 +58,8 @@ public interface ActiveDirectorySearchInterface {
             while (results.hasMore()) {
                 SearchResult result = results.next();
                 Attributes attrs = result.getAttributes();
-                memberEmails.add(attrs.get("userPrincipalName").toString());
-                System.out.println(attrs.get("userPrincipalName").toString());
+                memberEmails.add(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
+                System.out.println(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
             }
         } catch (NamingException e) {
             e.printStackTrace();
