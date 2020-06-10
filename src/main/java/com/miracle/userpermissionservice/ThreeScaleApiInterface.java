@@ -123,9 +123,8 @@ public interface ThreeScaleApiInterface {
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
             System.out.println(uri);
             HttpResponse response = httpClient.execute(request);
-            String responseString = new BasicResponseHandler().handleResponse(response);
+            String responseString = new BasicResponseHandler().handleEntity(response.getEntity());
             System.out.println(responseString);
-            System.out.println(response);
             System.out.println(response);
             return true;
 
