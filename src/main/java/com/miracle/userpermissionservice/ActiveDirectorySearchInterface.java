@@ -27,7 +27,7 @@ public interface ActiveDirectorySearchInterface {
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         controls.setReturningAttributes(reqAtt);
         try {
-            System.out.println("Trying to Fetch Users");
+            System.out.println("Trying to Fetch Internal Users in " + group);
             NamingEnumeration users = completeSearch(ctx, searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.toString());
@@ -50,7 +50,7 @@ public interface ActiveDirectorySearchInterface {
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         controls.setReturningAttributes(reqAtt);
         try {
-            System.out.println("Trying to Fetch Users");
+            System.out.println("Trying to Fetch External Users in " + group);
             NamingEnumeration users = completeSearch(ctx, searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.toString());
