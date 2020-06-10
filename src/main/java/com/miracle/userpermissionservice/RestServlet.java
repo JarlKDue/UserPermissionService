@@ -46,7 +46,13 @@ public class RestServlet {
     @GetMapping("/create_admin")
     public void createAdmin(){
         System.out.println("Creating Admin");
-        ThreeScaleApiInterface.syncAdminProviderUser("test@test.com");
+        ThreeScaleApiInterface.syncAdminProviderUser("testAdmin@test.com");
+    }
+
+    @GetMapping("/create_manager")
+    public void createManager(){
+        System.out.println("Creating Manager");
+        ThreeScaleApiInterface.syncManagerProviderUser("testManager@test.com");
     }
 
     public String fetchUserNameFromXMLSchema(String xml, String expression){

@@ -98,9 +98,10 @@ public interface ThreeScaleApiInterface {
                          HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
-                    .build();            HttpResponse response = httpClient.execute(request);
+                    .build();
             request.setURI(uri);
-            System.out.println(response.getLastHeader("Location").getValue());
+            HttpResponse response = httpClient.execute(request);
+            System.out.println(response);
             return true;
 
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException | URISyntaxException e) {
@@ -113,14 +114,17 @@ public interface ThreeScaleApiInterface {
         try {
             HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/permissions.xml");
-            request.setHeader("access_token", threeScaleAccessToken);
-            request.setHeader("allowed_service_ids", "allowed_service_ids[]");
-            request.setHeader("allowed_sections", threeScaleAccessToken);
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .addParameter("allowed_service_ids[]", "")
+                    .addParameter("allowed_sections[]", "{portal, finance, settings, partners, monitoring, plans, policy_registry}")
+                    .build();
+            request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             return true;
 
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | URISyntaxException e) {
             e.printStackTrace();
         }
         return false;
