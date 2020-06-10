@@ -24,7 +24,6 @@ public class GetLDAPConnectionBean {
         properties.put(Context.SECURITY_PROTOCOL, "simple");
         properties.put(Context.PROVIDER_URL, ldapAdServer);
         properties.put("java.naming.ldap.attributes.binary", "objectSID");
-
         try {
             return Optional.of(new InitialDirContext(properties));
         } catch (AuthenticationException e) {

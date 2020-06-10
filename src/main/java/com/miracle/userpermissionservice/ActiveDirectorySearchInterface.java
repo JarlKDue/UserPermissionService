@@ -1,10 +1,7 @@
 package com.miracle.userpermissionservice;
 
-import com.sun.jndi.toolkit.dir.SearchFilter;
-
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;

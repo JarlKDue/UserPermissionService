@@ -57,7 +57,6 @@ public interface ThreeScaleApiInterface {
     static String createProviderUser(String email){
         try {
             HttpClient httpClient = getHttpClient();
-
             HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
@@ -67,13 +66,16 @@ public interface ThreeScaleApiInterface {
                     .build();
             request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
-            String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
-            System.out.println(userId);
-            return userId;
+            if(response.getStatusLine().getStatusCode()==200){
+                String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
+                System.out.println(userId);
+                return userId;
+            } else return null;
+
         } catch (NoSuchAlgorithmException | KeyStoreException | IOException | URISyntaxException | KeyManagementException e) {
             e.printStackTrace();
         }
-        return "not created";
+        return null;
     }
 
     static boolean setUserToAdmin(String userId) {

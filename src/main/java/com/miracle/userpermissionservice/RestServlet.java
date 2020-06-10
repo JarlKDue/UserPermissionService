@@ -17,6 +17,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RestController
@@ -66,6 +68,26 @@ public class RestServlet {
         getLDAPConnectionBean.getDirContext().ifPresent(
                 context -> ThreeScaleApiInterface.syncManagerProviderUsers(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager"))
                 );
+    }
+
+    @GetMapping("/test_sync_users")
+    public void testSyncUsers(){
+        List<String> internalEmails = new ArrayList<>();
+        internalEmails.add("testInternalEmail1@test.com");
+        internalEmails.add("testInternalEmail2@test.com");
+        internalEmails.add("testInternalEmail3@test.com");
+        internalEmails.add("testInternalEmail4@test.com");
+        List<String> externalEmails = new ArrayList<>();
+        externalEmails.add("testExternalEmail1@test.com");
+        externalEmails.add("testExternalEmail2@test.com");
+        externalEmails.add("testExternalEmail3@test.com");
+        externalEmails.add("testExternalEmail4@test.com");
+        getLDAPConnectionBean.getDirContext().ifPresent(
+                context ->ThreeScaleApiInterface.syncAdminProviders(internalEmails)
+        );
+        getLDAPConnectionBean.getDirContext().ifPresent(
+                context ->ThreeScaleApiInterface.syncManagerProviderUsers(externalEmails)
+        );
     }
 
 }
