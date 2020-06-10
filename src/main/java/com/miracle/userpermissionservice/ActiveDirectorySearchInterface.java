@@ -84,4 +84,8 @@ public interface ActiveDirectorySearchInterface {
         }
         return null;
     }
+
+    static String extractPrincipalNameFromUserPrincipalName(String userPrincipalName){
+        return userPrincipalName.split("userPrincipalName: ")[0];
+    }
 }
