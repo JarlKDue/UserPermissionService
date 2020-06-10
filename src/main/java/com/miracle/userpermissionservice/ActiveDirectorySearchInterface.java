@@ -28,7 +28,7 @@ public interface ActiveDirectorySearchInterface {
         controls.setReturningAttributes(reqAtt);
         try {
             System.out.println("Trying to Fetch Internal Users in " + group);
-            NamingEnumeration users = completeSearch(ctx, searchFilter, controls);
+            NamingEnumeration users = completeSearchForInternalUsers(ctx, searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.toString());
             while (users.hasMore()) {
@@ -51,7 +51,7 @@ public interface ActiveDirectorySearchInterface {
         controls.setReturningAttributes(reqAtt);
         try {
             System.out.println("Trying to Fetch External Users in " + group);
-            NamingEnumeration users = completeSearch(ctx, searchFilter, controls);
+            NamingEnumeration users = completeSearchForExternalUsers(ctx, searchFilter, controls);
             SearchResult result = null;
             System.out.println(users.toString());
             while (users.hasMore()) {
@@ -65,9 +65,18 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
-    static NamingEnumeration completeSearch(DirContext ctx, String searchFilter, SearchControls controls){
+    static NamingEnumeration completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
             return ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static NamingEnumeration completeSearchForExternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
+        try{
+            return ctx.search("OU=Eksterne,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {
             e.printStackTrace();
         }
