@@ -66,7 +66,7 @@ public interface ThreeScaleApiInterface {
                     .build();
             request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
-            if(response.getStatusLine().getStatusCode()==200){
+            if(response.getStatusLine().getStatusCode()==201){
                 String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
                 System.out.println(userId);
                 return userId;

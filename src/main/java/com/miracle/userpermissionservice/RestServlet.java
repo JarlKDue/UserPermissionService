@@ -82,12 +82,8 @@ public class RestServlet {
         externalEmails.add("testExternalEmail2@test.com");
         externalEmails.add("testExternalEmail3@test.com");
         externalEmails.add("testExternalEmail4@test.com");
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context ->ThreeScaleApiInterface.syncAdminProviders(internalEmails)
-        );
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context ->ThreeScaleApiInterface.syncManagerProviderUsers(externalEmails)
-        );
+        ThreeScaleApiInterface.syncAdminProviders(internalEmails);
+        ThreeScaleApiInterface.syncManagerProviderUsers(externalEmails);
     }
 
 }
