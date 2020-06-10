@@ -216,7 +216,9 @@ public interface ThreeScaleApiInterface {
         ThreeScaleUsers threeScaleUsers = fetchAllProviderUsers();
         List<ThreeScaleUser> threeScaleUserList = threeScaleUsers.users;
         for(ThreeScaleUser threeScaleUser : threeScaleUserList){
-            System.out.println(threeScaleUser.toString());
+            System.out.println(threeScaleUser.getEmail());
+            System.out.println(threeScaleUser.getAccount_id());
+            System.out.println(threeScaleUser.getId());
         }
         return true;
     }
