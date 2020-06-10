@@ -15,7 +15,8 @@ public interface ActiveDirectorySearchInterface {
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
         List<String> externalEmails = getExternalEmails(ctx, group);
         List<String> internalEmails = getInternalEmails(ctx, group);
-        return new ArrayList<>();
+        externalEmails.addAll(internalEmails);
+        return externalEmails;
     }
 
     static List<String> getInternalEmails(DirContext ctx, String group) {

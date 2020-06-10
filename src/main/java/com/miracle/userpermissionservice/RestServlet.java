@@ -67,8 +67,10 @@ public class RestServlet {
         Optional<DirContext> ctx = getLDAPConnectionBean.getDirContext();
         if(ctx.isPresent()){
             List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_Administrator");
+            System.out.println(adminEmails);
             ThreeScaleApiInterface.syncAdminProviders(adminEmails);
             List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_API_Manager");
+            System.out.println(managerEmails);
             ThreeScaleApiInterface.syncManagerProviderUsers(managerEmails);
         }
     }
