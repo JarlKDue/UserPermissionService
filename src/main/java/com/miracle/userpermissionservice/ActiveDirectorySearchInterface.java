@@ -16,6 +16,10 @@ public interface ActiveDirectorySearchInterface {
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
         List<String> externalEmails = getExternalEmails(ctx, group);
         List<String> internalEmails = getInternalEmails(ctx, group);
+        return new ArrayList<>();
+    }
+
+    static List<String> getInternalEmails(DirContext ctx, String group) {
         List<String> memberEmails = new ArrayList<>();
         String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
         String[] reqAtt = { "email"};
@@ -38,13 +42,9 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
-    static List<String> getInternalEmails(DirContext ctx, String group) {
-        return null;
-    }
-
     static List<String> getExternalEmails(DirContext ctx, String group) {
         List<String> memberEmails = new ArrayList<>();
-        String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org)";
+        String searchFilter = "(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Eksterne,DC=eniig,DC=org)";
         String[] reqAtt = { "email"};
         SearchControls controls = new SearchControls();
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
@@ -62,7 +62,8 @@ public interface ActiveDirectorySearchInterface {
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        return memberEmails;    }
+        return memberEmails;
+    }
 
     static NamingEnumeration completeSearch(DirContext ctx, String searchFilter, SearchControls controls){
         try{
