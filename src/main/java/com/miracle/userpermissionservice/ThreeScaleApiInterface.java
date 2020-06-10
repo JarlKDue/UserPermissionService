@@ -8,6 +8,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
@@ -17,6 +18,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.web.util.UriBuilder;
 
@@ -26,6 +28,7 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ThreeScaleApiInterface {
@@ -111,20 +114,22 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean updateUserMemberPermissions(String userId){
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("allowed_sections[]", "portal"));
+        params.add(new BasicNameValuePair("allowed_sections[]", "finance"));
+        params.add(new BasicNameValuePair("allowed_sections[]", "settings"));
+        params.add(new BasicNameValuePair("allowed_sections[]", "partners"));
+        params.add(new BasicNameValuePair("allowed_sections[]", "monitoring"));
+        params.add(new BasicNameValuePair("allowed_service_ids[]", ""));
         try {
             HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/permissions.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("allowed_service_ids[]", "")
-//                    .addParameter("allowed_sections[]", "portal")
-//                    .addParameter("allowed_sections[]", "finance")
-//                    .addParameter("allowed_sections[]", "settings")
-//                    .addParameter("allowed_sections[]", "partners")
-//                    .addParameter("allowed_sections[]", "monitoring")
-//                    .addParameter("allowed_sections[]", "plans")
                     .build();
             request.setURI(uri);
+            request.setEntity(new UrlEncodedFormEntity(params));
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
             System.out.println(uri);
             HttpResponse response = httpClient.execute(request);
