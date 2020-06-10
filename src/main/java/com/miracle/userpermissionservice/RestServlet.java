@@ -61,10 +61,10 @@ public class RestServlet {
     @GetMapping("/sync_users")
     public void syncUsers(){
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context ->ThreeScaleApiInterface.syncAdminProviders(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "r_3SCALE_Administrator"))
+                context ->ThreeScaleApiInterface.syncAdminProviders(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_Administrator"))
         );
         getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ThreeScaleApiInterface.syncManagerProviderUsers(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "r_3SCALE_API_Manager"))
+                context -> ThreeScaleApiInterface.syncManagerProviderUsers(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager"))
                 );
     }
 
