@@ -142,8 +142,8 @@ public interface ThreeScaleApiInterface {
     }
 
     static String extractUserIdFromLocation(String location){
-        Pattern p = Pattern.compile("/id=(.*?)/&");
-        Matcher m = p.matcher(location);
-        return m.group(1);
+        String[] splittedLocation = location.split("id=");
+        String id = splittedLocation[1].split("&")[0];
+        return id;
     }
 }
