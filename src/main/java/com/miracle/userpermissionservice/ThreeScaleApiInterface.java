@@ -35,18 +35,20 @@ public interface ThreeScaleApiInterface {
 
 
     static boolean syncAdminProviderUser(String email){
-            String userId = "userIdFromResponse";
-            createProviderUser(email);
-            setUserToAdmin(userId);
-            activateAccount(userId);
+            String userId = createProviderUser(email);
+            if(userId!=null) {
+                setUserToAdmin(userId);
+                activateAccount(userId);
+            } else System.out.println("User already exists");
             return true;
     }
 
     static boolean syncManagerProviderUser(String email){
-        String userId = "userIdFromResponse";
-        createProviderUser(email);
-        updateUserMemberPermissions(userId);
-        activateAccount(userId);
+        String userId = createProviderUser(email);
+        if(userId!=null) {
+            updateUserMemberPermissions(userId);
+            activateAccount(userId);
+        } else System.out.println("User already exists");
         return true;    }
 
     static String createProviderUser(String email){
@@ -65,6 +67,7 @@ public interface ThreeScaleApiInterface {
             System.out.println(response.getLastHeader("Location"));
             String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
             System.out.println(userId);
+            return userId;
         } catch (NoSuchAlgorithmException | KeyStoreException | IOException | URISyntaxException | KeyManagementException e) {
             e.printStackTrace();
         }
