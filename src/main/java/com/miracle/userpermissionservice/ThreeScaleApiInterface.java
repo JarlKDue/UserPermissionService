@@ -213,7 +213,11 @@ public interface ThreeScaleApiInterface {
         //For admin users, fetch all admin users from 3scale, build new list of IDS based on difference
         //Send list to delete method
         //Same for Managers
-        System.out.println(fetchAllProviderUsers());
+        ThreeScaleUsers threeScaleUsers = fetchAllProviderUsers();
+        List<ThreeScaleUser> threeScaleUserList = threeScaleUsers.users;
+        for(ThreeScaleUser threeScaleUser : threeScaleUserList){
+            System.out.println(threeScaleUser.toString());
+        }
         return true;
     }
 

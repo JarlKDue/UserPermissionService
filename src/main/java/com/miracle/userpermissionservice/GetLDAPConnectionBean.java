@@ -7,7 +7,6 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
-import java.rmi.Naming;
 import java.util.Optional;
 import java.util.Properties;
 
