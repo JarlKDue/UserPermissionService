@@ -95,7 +95,7 @@ public interface ThreeScaleApiInterface {
     static boolean activateAccount(String userId){
         try {
             HttpClient httpClient = getHttpClient();
-                         HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
+            HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
                     .build();
@@ -117,7 +117,12 @@ public interface ThreeScaleApiInterface {
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("allowed_service_ids[]", "8")
-                    .addParameter("allowed_sections[]", "finance, settings, partners")
+                    .addParameter("allowed_sections[]", "finance")
+                    .addParameter("allowed_sections[]", "settings")
+                    .addParameter("allowed_sections[]", "partners")
+                    .addParameter("allowed_sections[]", "monitoring")
+                    .addParameter("allowed_sections[]", "plans")
+                    .addParameter("allowed_sections[]", "policy_registry")
                     .build();
             request.setURI(uri);
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
