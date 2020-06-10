@@ -120,7 +120,7 @@ public interface ThreeScaleApiInterface {
             URI uri = new URIBuilder(request.getURI())
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("allowed_service_ids[]", "8")
-                    .addParameter("allowed_sections[]", "portal, finance, settings, partners, monitoring, plans, policy_registry")
+                    .addParameter("allowed_sections[]", "finance, settings, partners")
                     .build();
             request.setURI(uri);
             System.out.println(uri);
