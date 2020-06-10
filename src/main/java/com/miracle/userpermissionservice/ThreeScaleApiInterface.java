@@ -147,6 +147,7 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean syncAdminProviders(List<String> f_3SCALE_administrator) {
+        System.out.println("Syncing Admins");
         for(String email : f_3SCALE_administrator){
             syncAdminProviderUser(email);
         }
@@ -154,6 +155,7 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean syncManagerProviderUsers(List<String> f_3SCALE_api_manager) {
+        System.out.println("Syncing Managers");
         for(String email : f_3SCALE_api_manager){
             syncManagerProviderUser(email);
         }
