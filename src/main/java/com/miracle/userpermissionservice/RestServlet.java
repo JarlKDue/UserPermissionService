@@ -8,6 +8,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.naming.directory.DirContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RestController
@@ -62,12 +64,13 @@ public class RestServlet {
 
     @GetMapping("/sync_users")
     public void syncUsers(){
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context ->ThreeScaleApiInterface.syncAdminProviders(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_Administrator"))
-        );
-        getLDAPConnectionBean.getDirContext().ifPresent(
-                context -> ThreeScaleApiInterface.syncManagerProviderUsers(ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(context, "f_3SCALE_API_Manager"))
-                );
+        Optional<DirContext> ctx = getLDAPConnectionBean.getDirContext();
+        if(ctx.isPresent()){
+            List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_Administrator");
+            ThreeScaleApiInterface.syncAdminProviders(adminEmails);
+            List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_API_Manager");
+            ThreeScaleApiInterface.syncManagerProviderUsers(managerEmails);
+        }
     }
 
     @GetMapping("/test_sync_users")
