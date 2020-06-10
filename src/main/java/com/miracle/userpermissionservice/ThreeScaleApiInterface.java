@@ -64,7 +64,6 @@ public interface ThreeScaleApiInterface {
                     .build();
             request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
-            System.out.println(response.getLastHeader("Location"));
             String userId = extractUserIdFromLocation(response.getLastHeader("Location").getValue());
             System.out.println(userId);
             return userId;
@@ -79,12 +78,15 @@ public interface ThreeScaleApiInterface {
         try {
             HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/admin.xml");
-            request.setHeader("access_token", threeScaleAccessToken);
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .build();
+            request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
             System.out.println(response);
             return true;
 
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | URISyntaxException e) {
             e.printStackTrace();
         }
         return false;
@@ -94,12 +96,14 @@ public interface ThreeScaleApiInterface {
         try {
             HttpClient httpClient = getHttpClient();
                          HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/activate.xml");
-            request.setHeader("access_token", threeScaleAccessToken);
-            HttpResponse response = httpClient.execute(request);
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .build();            HttpResponse response = httpClient.execute(request);
+            request.setURI(uri);
             System.out.println(response.getLastHeader("Location").getValue());
             return true;
 
-        } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
+        } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException | URISyntaxException e) {
             e.printStackTrace();
         }
         return false;
