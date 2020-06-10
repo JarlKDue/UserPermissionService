@@ -1,6 +1,11 @@
 package com.miracle.userpermissionservice;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.miracle.userpermissionservice.model.ThreeScaleUser;
+import com.miracle.userpermissionservice.model.ThreeScaleUsers;
 import com.sun.jndi.toolkit.url.Uri;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -9,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
@@ -174,5 +180,68 @@ public interface ThreeScaleApiInterface {
         String[] splittedLocation = location.split("id=");
         String id = splittedLocation[1].split("&")[0];
         return id;
+    }
+
+    /**
+     <?xml version="1.0" encoding="UTF-8"?>
+     <users>
+     <user>
+     <id>2</id>
+     <created_at>2020-03-20T11:39:50+01:00</created_at>
+     <updated_at>2020-03-20T11:39:50+01:00</updated_at>
+     <account_id>2</account_id>
+     <state>active</state>
+     <role>admin</role>
+     <username>admin</username>
+     <email>admin@intapisp.intapisp.pr3scalec01.eniig.org</email>
+     <extra_fields></extra_fields>
+     </user>
+     <user>
+     <id>6</id>
+     <created_at>2020-05-13T10:14:59+02:00</created_at>
+     <updated_at>2020-05-13T10:22:04+02:00</updated_at>
+     <account_id>2</account_id>
+     <state>active</state>
+     <role>admin</role>
+     <username>lardav@norlys.dk</username>
+     <email>lardav@norlys.dk</email>
+     <extra_fields></extra_fields>
+     </user>
+     </users>
+     */
+    static boolean removeUsersNoLongerInGroups(){
+        //For admin users, fetch all admin users from 3scale, build new list of IDS based on difference
+        //Send list to delete method
+        //Same for Managers
+        System.out.println(fetchAllProviderUsers());
+        return true;
+    }
+
+    static ThreeScaleUsers fetchAllProviderUsers(){
+        try {
+            HttpClient httpClient = getHttpClient();
+            HttpGet request = new HttpGet(threeScaleUrl + "admin/api/users.xml");
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .build();
+            request.setURI(uri);
+            HttpResponse response = httpClient.execute(request);
+            String responseString = new BasicResponseHandler().handleEntity(response.getEntity());
+            ThreeScaleUsers threeScaleUsers = generateThreeScaleUsersFromProviderResponse(responseString);
+            System.out.println(response);
+            return threeScaleUsers;
+
+        } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static ThreeScaleUsers generateThreeScaleUsersFromProviderResponse(String response) throws JsonProcessingException {
+        XmlMapper xmlMapper = (XmlMapper) new XmlMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String newXMLString = response.replaceAll("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n", "");
+        ThreeScaleUsers users2 = xmlMapper.readValue(newXMLString, ThreeScaleUsers.class);
+        return users2;
     }
 }

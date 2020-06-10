@@ -91,4 +91,9 @@ public class RestServlet {
         ThreeScaleApiInterface.syncManagerProviderUsers(externalEmails);
     }
 
+    @GetMapping("/test_delete_users")
+    public void testDeleteUsers(){
+        ThreeScaleApiInterface.removeUsersNoLongerInGroups();
+    }
+
 }
