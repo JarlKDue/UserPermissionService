@@ -2,6 +2,7 @@ package com.miracle.userpermissionservice;
 
 
 import com.sun.jndi.toolkit.url.Uri;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -12,6 +13,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustAllStrategy;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -121,6 +123,9 @@ public interface ThreeScaleApiInterface {
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
             System.out.println(uri);
             HttpResponse response = httpClient.execute(request);
+            String responseString = new BasicResponseHandler().handleResponse(response);
+            System.out.println(responseString);
+            System.out.println(response);
             System.out.println(response);
             return true;
 
