@@ -21,13 +21,10 @@ import org.springframework.web.util.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public interface ThreeScaleApiInterface {
 
@@ -112,8 +109,6 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean updateUserMemberPermissions(String userId){
-        String permissions[]= {"portal","finance","settings","partners","monitoring","plans","policy_registry"};
-
         try {
             HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/permissions.xml");
@@ -121,6 +116,7 @@ public interface ThreeScaleApiInterface {
                     .addParameter("access_token", threeScaleAccessToken)
                     .addParameter("allowed_service_ids[]", "8")
                     .addParameter("allowed_sections[]", "finance, settings, partners")
+                    .addParameter("Content-Type", "application/x-www-form-urlencoded")
                     .build();
             request.setURI(uri);
             System.out.println(uri);
