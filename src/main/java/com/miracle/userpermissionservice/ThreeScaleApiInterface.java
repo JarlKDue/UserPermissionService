@@ -203,9 +203,9 @@ public interface ThreeScaleApiInterface {
             if(removeUser){
                 usersToRemove.add(threeScaleUser);
             }
+        }
         for(ThreeScaleUser threeScaleUser1 : usersToRemove){
             System.out.println("Users To Remove " + threeScaleUser1.getEmail());
-        }
         }
         return true;
     }
