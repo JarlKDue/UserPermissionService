@@ -182,43 +182,30 @@ public interface ThreeScaleApiInterface {
         return id;
     }
 
-    /**
-     <?xml version="1.0" encoding="UTF-8"?>
-     <users>
-     <user>
-     <id>2</id>
-     <created_at>2020-03-20T11:39:50+01:00</created_at>
-     <updated_at>2020-03-20T11:39:50+01:00</updated_at>
-     <account_id>2</account_id>
-     <state>active</state>
-     <role>admin</role>
-     <username>admin</username>
-     <email>admin@intapisp.intapisp.pr3scalec01.eniig.org</email>
-     <extra_fields></extra_fields>
-     </user>
-     <user>
-     <id>6</id>
-     <created_at>2020-05-13T10:14:59+02:00</created_at>
-     <updated_at>2020-05-13T10:22:04+02:00</updated_at>
-     <account_id>2</account_id>
-     <state>active</state>
-     <role>admin</role>
-     <username>lardav@norlys.dk</username>
-     <email>lardav@norlys.dk</email>
-     <extra_fields></extra_fields>
-     </user>
-     </users>
-     */
-    static boolean removeUsersNoLongerInGroups(){
+    static boolean removeUsersNoLongerInGroups(List<String> activeUsersInAD){
         //For admin users, fetch all admin users from 3scale, build new list of IDS based on difference
         //Send list to delete method
         //Same for Managers
+        List<ThreeScaleUser> usersToRemove = new ArrayList<>();
         ThreeScaleUsers threeScaleUsers = fetchAllProviderUsers();
         List<ThreeScaleUser> threeScaleUserList = threeScaleUsers.users;
         for(ThreeScaleUser threeScaleUser : threeScaleUserList){
-            System.out.println(threeScaleUser.getEmail());
-            System.out.println(threeScaleUser.getAccount_id());
-            System.out.println(threeScaleUser.getId());
+            boolean removeUser = true;
+            for(String userEmail : activeUsersInAD){
+                if(threeScaleUser.getEmail().equals(userEmail)){
+                    System.out.println(userEmail + " exists in both AD and 3Scale and should not be deleted");
+                    //System.out.println(threeScaleUser.getEmail());
+                    //System.out.println(threeScaleUser.getAccount_id());
+                    //System.out.println(threeScaleUser.getId());
+                    removeUser = false;
+                }
+            }
+            if(removeUser){
+                usersToRemove.add(threeScaleUser);
+            }
+        for(ThreeScaleUser threeScaleUser1 : usersToRemove){
+            System.out.println("Users To Remove " + threeScaleUser1.getEmail());
+        }
         }
         return true;
     }

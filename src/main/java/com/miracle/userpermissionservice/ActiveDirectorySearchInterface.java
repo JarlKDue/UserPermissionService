@@ -34,7 +34,6 @@ public interface ActiveDirectorySearchInterface {
                 SearchResult result = results.next();
                 Attributes attrs = result.getAttributes();
                 memberEmails.add(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
-                System.out.println(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
             }
         } catch (NamingException e) {
             e.printStackTrace();
@@ -60,7 +59,6 @@ public interface ActiveDirectorySearchInterface {
                 SearchResult result = results.next();
                 Attributes attrs = result.getAttributes();
                 memberEmails.add(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
-                System.out.println(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
             }
         } catch (NamingException e) {
             e.printStackTrace();
@@ -86,6 +84,6 @@ public interface ActiveDirectorySearchInterface {
         return null;
     }
     static String extractPrincipalNameFromUserPrincipalName(String userPrincipalName){
-        return userPrincipalName.substring(19, userPrincipalName.length());
+        return userPrincipalName.substring(19);
     }
 }
