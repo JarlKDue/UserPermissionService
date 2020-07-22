@@ -105,7 +105,10 @@ public interface ThreeScaleApiInterface {
                     .build();
             request.setURI(uri);
             HttpResponse response = httpClient.execute(request);
-            System.out.println(response);
+            if(response.getStatusLine().getStatusCode()==200){
+                System.out.println("User deleted");
+
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -204,6 +207,7 @@ public interface ThreeScaleApiInterface {
             }
             if(removeUser){
                 usersToRemove.add(threeScaleUser);
+                System.out.println("Deleting User : " + threeScaleUser.getEmail()) ;
             }
         }
         deleteUsersByList(usersToRemove);
@@ -228,7 +232,6 @@ public interface ThreeScaleApiInterface {
             HttpResponse response = httpClient.execute(request);
             String responseString = new BasicResponseHandler().handleEntity(response.getEntity());
             ThreeScaleUsers threeScaleUsers = generateThreeScaleUsersFromProviderResponse(responseString);
-            System.out.println(response);
             return threeScaleUsers;
 
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException | KeyStoreException | URISyntaxException e) {
