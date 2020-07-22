@@ -70,6 +70,10 @@ public class RestServlet {
             ThreeScaleApiInterface.syncAdminProviders(adminEmails);
             List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_API_Manager");
             ThreeScaleApiInterface.syncManagerProviderUsers(managerEmails);
+            List<String> combinedEmails = new ArrayList<>();
+            combinedEmails.addAll(adminEmails);
+            combinedEmails.addAll(managerEmails);
+            ThreeScaleApiInterface.removeUsersNoLongerInGroups(combinedEmails);
         }
     }
 

@@ -43,8 +43,6 @@ public interface ActiveDirectorySearchInterface {
 
     static List<String> getExternalEmails(DirContext ctx, String group) {
         NamingEnumeration<SearchResult> results;
-
-
         List<String> memberEmails = new ArrayList<>();
         String searchFilter = "(&(objectCategory=user)(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org))";
         String[] reqAtt = { "userPrincipalName"};
@@ -66,7 +64,7 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
-    static NamingEnumeration completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
+    static NamingEnumeration<SearchResult> completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
             return ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {
@@ -75,7 +73,7 @@ public interface ActiveDirectorySearchInterface {
         return null;
     }
 
-    static NamingEnumeration completeSearchForExternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
+    static NamingEnumeration<SearchResult> completeSearchForExternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
             return ctx.search("OU=Eksterne,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {

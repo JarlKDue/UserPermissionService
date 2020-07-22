@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.miracle.userpermissionservice.model.ThreeScaleUser;
 import com.miracle.userpermissionservice.model.ThreeScaleUsers;
-import com.sun.jndi.toolkit.url.Uri;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -21,13 +18,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustAllStrategy;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.web.util.UriBuilder;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,6 +94,22 @@ public interface ThreeScaleApiInterface {
             e.printStackTrace();
         }
         return false;
+    }
+
+    static boolean deleteUserById(int userId){
+        try {
+            HttpClient httpClient = getHttpClient();
+            HttpDelete request = new HttpDelete(threeScaleUrl + "admin/api/users/" + userId + "/admin.xml");
+            URI uri = new URIBuilder(request.getURI())
+                    .addParameter("access_token", threeScaleAccessToken)
+                    .build();
+            request.setURI(uri);
+            HttpResponse response = httpClient.execute(request);
+            System.out.println(response);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     static boolean activateAccount(String userId){
@@ -183,9 +192,6 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean removeUsersNoLongerInGroups(List<String> activeUsersInAD){
-        //For admin users, fetch all admin users from 3scale, build new list of IDS based on difference
-        //Send list to delete method
-        //Same for Managers
         List<ThreeScaleUser> usersToRemove = new ArrayList<>();
         ThreeScaleUsers threeScaleUsers = fetchAllProviderUsers();
         List<ThreeScaleUser> threeScaleUserList = threeScaleUsers.users;
@@ -193,10 +199,6 @@ public interface ThreeScaleApiInterface {
             boolean removeUser = true;
             for(String userEmail : activeUsersInAD){
                 if(threeScaleUser.getEmail().equals(userEmail)){
-                    System.out.println(userEmail + " exists in both AD and 3Scale and should not be deleted");
-                    //System.out.println(threeScaleUser.getEmail());
-                    //System.out.println(threeScaleUser.getAccount_id());
-                    //System.out.println(threeScaleUser.getId());
                     removeUser = false;
                 }
             }
@@ -204,8 +206,13 @@ public interface ThreeScaleApiInterface {
                 usersToRemove.add(threeScaleUser);
             }
         }
-        for(ThreeScaleUser threeScaleUser1 : usersToRemove){
-            System.out.println("Users To Remove " + threeScaleUser1.getEmail());
+        deleteUsersByList(usersToRemove);
+        return true;
+    }
+
+    static boolean deleteUsersByList(List<ThreeScaleUser> threeScaleUsers){
+        for(ThreeScaleUser threeScaleUser : threeScaleUsers){
+            deleteUserById(threeScaleUser.getId());
         }
         return true;
     }
