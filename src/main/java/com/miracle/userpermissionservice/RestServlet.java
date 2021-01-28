@@ -26,6 +26,8 @@ import java.util.Optional;
 @RestController
 public class RestServlet {
 
+    public static final String THREESCALEADMINSADGROUP = "r_3SCALE_Administrator";
+    public static final String THREESCALEMANAGERSADGROUP = "r_3SCALE_API_Manager";
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 
@@ -66,9 +68,9 @@ public class RestServlet {
     public void syncUsers(){
         Optional<DirContext> ctx = getLDAPConnectionBean.getDirContext();
         if(ctx.isPresent()){
-            List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_Administrator");
+            List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), THREESCALEADMINSADGROUP);
             ThreeScaleApiInterface.syncAdminProviders(adminEmails);
-            List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_API_Manager");
+            List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), THREESCALEMANAGERSADGROUP);
             ThreeScaleApiInterface.syncManagerProviderUsers(managerEmails);
             List<String> combinedEmails = new ArrayList<>();
             combinedEmails.addAll(adminEmails);
@@ -97,8 +99,8 @@ public class RestServlet {
     public void testDeleteUsers(){
         Optional<DirContext> ctx = getLDAPConnectionBean.getDirContext();
         if(ctx.isPresent()){
-            List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_Administrator");
-            List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), "f_3SCALE_API_Manager");
+            List<String> adminEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), THREESCALEADMINSADGROUP);
+            List<String> managerEmails = ActiveDirectorySearchInterface.getMembersOf3ScaleGroups(ctx.get(), THREESCALEMANAGERSADGROUP);
             adminEmails.addAll(managerEmails);
             ThreeScaleApiInterface.removeUsersNoLongerInGroups(adminEmails);
         }

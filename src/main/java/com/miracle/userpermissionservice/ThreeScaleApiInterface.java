@@ -1,6 +1,5 @@
 package com.miracle.userpermissionservice;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -32,8 +31,8 @@ import java.util.List;
 
 public interface ThreeScaleApiInterface {
 
-    static String threeScaleUrl = "https://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
-    static String threeScaleAccessToken = "npuy3x6a0h6his7o";
+    String threeScaleUrl = "https://intapisp-admin.intapisp.pr3scalec01.eniig.org/";
+    String threeScaleAccessToken = "npuy3x6a0h6his7o";
 
 
     static boolean syncAdminProviderUser(String email){
