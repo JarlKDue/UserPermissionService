@@ -77,7 +77,7 @@ public interface ActiveDirectorySearchInterface {
 
     static NamingEnumeration<SearchResult> completeSearchForExternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
-            return ctx.search("OU=Eksterne,DC=eniig,DC=org", searchFilter, controls);
+            return ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {
             e.printStackTrace();
         }
