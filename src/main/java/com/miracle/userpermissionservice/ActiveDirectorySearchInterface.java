@@ -22,7 +22,7 @@ public interface ActiveDirectorySearchInterface {
     static List<String> getInternalEmails(DirContext ctx, String group) {
         NamingEnumeration<SearchResult> results;
         List<String> memberEmails = new ArrayList<>();
-        String searchFilter = "(&(objectCategory=user)(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org))";
+        String searchFilter = "(&(objectCategory=user)(memberOf:1.2.840.113556.1.4.1941:=CN=" + group + ",OU=3SCALE,OU=Roller,OU=Standard,DC=eniig,DC=org))";
         String[] reqAtt = { "userPrincipalName"};
         SearchControls controls = new SearchControls();
         controls.setSearchScope(SearchControls.SUBTREE_SCOPE);

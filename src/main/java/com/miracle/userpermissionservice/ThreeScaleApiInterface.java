@@ -54,6 +54,7 @@ public interface ThreeScaleApiInterface {
 
     static String createProviderUser(String email){
         try {
+            System.out.println("Creating new Provider User, User Email and Accountname: " + email);
             HttpClient httpClient = getHttpClient();
             HttpPost request = new HttpPost(threeScaleUrl + "admin/api/users.xml");
             URI uri = new URIBuilder(request.getURI())
@@ -77,7 +78,6 @@ public interface ThreeScaleApiInterface {
     }
 
     static boolean setUserToAdmin(String userId) {
-
         try {
             HttpClient httpClient = getHttpClient();
             HttpPut request = new HttpPut(threeScaleUrl + "admin/api/users/" + userId + "/admin.xml");
