@@ -26,8 +26,9 @@ import java.util.Optional;
 @RestController
 public class RestServlet {
 
-    public static final String THREESCALEADMINSADGROUP = "r_3SCALE_Admin";
-    public static final String THREESCALEMANAGERSADGROUP = "r_3SCALE_API_Manager";
+    public static final String THREESCALEADMINSADGROUP = "f_3SCALE_Administrator";
+    public static final String THREESCALEMANAGERSADGROUP = "f_3SCALE_API_Manager";
+
     @Autowired
     GetLDAPConnectionBean getLDAPConnectionBean;
 

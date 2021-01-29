@@ -58,6 +58,7 @@ public interface ActiveDirectorySearchInterface {
             assert results != null;
             while (results.hasMore()) {
                 SearchResult result = results.next();
+                System.out.println(result.toString());
                 Attributes attrs = result.getAttributes();
                 memberEmails.add(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
             }
@@ -69,7 +70,7 @@ public interface ActiveDirectorySearchInterface {
 
     static NamingEnumeration<SearchResult> completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
-            return ctx.search("OU=Eniig_Faellesfunktioner,DC=eniig,DC=org", searchFilter, controls);
+            return ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {
             e.printStackTrace();
         }
