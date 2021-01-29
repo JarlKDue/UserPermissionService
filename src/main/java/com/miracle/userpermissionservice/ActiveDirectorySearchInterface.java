@@ -34,6 +34,7 @@ public interface ActiveDirectorySearchInterface {
             results = completeSearchForInternalUsers(ctx, searchFilter, controls);
             while (results.hasMore()) {
                 SearchResult result = results.next();
+                System.out.println(result.toString());
                 Attributes attrs = result.getAttributes();
                 memberEmails.add(extractPrincipalNameFromUserPrincipalName(attrs.get("userPrincipalName").toString()));
             }
