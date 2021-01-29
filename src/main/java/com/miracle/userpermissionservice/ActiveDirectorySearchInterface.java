@@ -1,11 +1,10 @@
 package com.miracle.userpermissionservice;
 
+import com.sun.jndi.toolkit.dir.SearchFilter;
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
+import javax.naming.directory.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ public interface ActiveDirectorySearchInterface {
 
 
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
+        getAllMembers(ctx);
         List<String> externalEmails = getExternalEmails(ctx, group);
         List<String> internalEmails = getInternalEmails(ctx, group);
         System.out.println(externalEmails);
@@ -68,9 +68,27 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
+    static void getAllMembers(DirContext dirContext) {
+        String searchBase = "dc=eniig,dc=org";
+        String searchFilter = "OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org";
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        try {
+            NamingEnumeration<SearchResult> results = dirContext.search(searchBase, searchFilter, searchControls);
+            while(results.hasMore()){
+                SearchResult result = results.next();
+                Attributes attributes = result.getAttributes();
+                Attribute attribute = attributes.get("userPrincipalName");
+                System.out.println(attribute.toString());
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
     static NamingEnumeration<SearchResult> completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
-            return ctx.search("OU=*,DC=eniig,DC=org", searchFilter, controls);
+            return ctx.search("OU=Standard,DC=eniig,DC=org", searchFilter, controls);
         } catch (NamingException e) {
             e.printStackTrace();
         }
