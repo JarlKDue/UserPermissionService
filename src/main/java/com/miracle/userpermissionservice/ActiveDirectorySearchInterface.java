@@ -12,7 +12,7 @@ public interface ActiveDirectorySearchInterface {
 
 
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
-        getAllMembers(ctx);
+        getAllMembers(ctx, group);
         List<String> externalEmails = getExternalEmails(ctx, group);
         List<String> internalEmails = getInternalEmails(ctx, group);
         System.out.println(externalEmails);
@@ -68,13 +68,14 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
-    static void getAllMembers(DirContext dirContext) {
+    static void getAllMembers(DirContext dirContext, String group) {
         String searchBase = "dc=eniig,dc=org";
-        String searchFilter = "OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org";
+        String searchFilter = "CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org";
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         try {
             NamingEnumeration<SearchResult> results = dirContext.search(searchBase, searchFilter, searchControls);
+            System.out.println(results);
             while(results.hasMore()){
                 SearchResult result = results.next();
                 Attributes attributes = result.getAttributes();
