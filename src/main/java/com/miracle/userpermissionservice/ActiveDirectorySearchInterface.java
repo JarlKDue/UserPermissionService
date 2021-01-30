@@ -72,7 +72,7 @@ public interface ActiveDirectorySearchInterface {
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         try {
-            NamingEnumeration<SearchResult> results = dirContext.search("CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", "", searchControls);
+            NamingEnumeration<SearchResult> results = dirContext.search("CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", "objectCategory=user", searchControls);
             System.out.println(results);
             while(results.hasMore()){
                 SearchResult result = results.next();
