@@ -68,24 +68,22 @@ public interface ActiveDirectorySearchInterface {
         return memberEmails;
     }
 
-//    static void getAllMembers(DirContext dirContext, String group) {
-//        String searchBase = "dc=eniig,dc=org";
-//        String searchFilter = "CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org";
-//        SearchControls searchControls = new SearchControls();
-//        searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-//        try {
-//            NamingEnumeration<SearchResult> results = dirContext.search(searchBase, searchFilter, searchControls);
-//            System.out.println(results);
-//            while(results.hasMore()){
-//                SearchResult result = results.next();
-//                Attributes attributes = result.getAttributes();
-//                Attribute attribute = attributes.get("userPrincipalName");
-//                System.out.println(attribute.toString());
-//            }
-//        } catch (Exception e){
-//            System.out.println(e);
-//        }
-//    }
+    static void getAllMembers(DirContext dirContext, String group) {
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        try {
+            NamingEnumeration<SearchResult> results = dirContext.search("CN=" + group + ",OU=3SCALE,OU=Funktioner,OU=Standard,DC=eniig,DC=org", "", searchControls);
+            System.out.println(results);
+            while(results.hasMore()){
+                SearchResult result = results.next();
+                Attributes attributes = result.getAttributes();
+                Attribute attribute = attributes.get("userPrincipalName");
+                System.out.println(attribute.toString());
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
     static NamingEnumeration<SearchResult> completeSearchForInternalUsers(DirContext ctx, String searchFilter, SearchControls controls){
         try{
