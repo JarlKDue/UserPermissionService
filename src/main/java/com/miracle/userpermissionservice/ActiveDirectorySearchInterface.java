@@ -12,7 +12,7 @@ public interface ActiveDirectorySearchInterface {
 
 
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
-//        getAllMembers(ctx, group);
+        getAllMembers(ctx, group);
         List<String> externalEmails = getExternalEmails(ctx, group);
         List<String> internalEmails = getInternalEmails(ctx, group);
         System.out.println(externalEmails);
