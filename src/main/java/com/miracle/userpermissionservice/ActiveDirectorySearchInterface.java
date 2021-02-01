@@ -58,7 +58,7 @@ public interface ActiveDirectorySearchInterface {
         controls.setReturningAttributes(reqAtt);
         try {
             System.out.println("Trying to Fetch Internal Users in " + group);
-            results = searchForUsers("OU=" + ou  + ",DC=eniig,DC=org",ctx, searchFilter, controls);
+            results = searchForUsers(ou + ",DC=eniig,DC=org",ctx, searchFilter, controls);
             while (results.hasMore()) {
                 SearchResult result = results.next();
                 System.out.println(result.toString());
