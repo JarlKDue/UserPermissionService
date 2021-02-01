@@ -21,7 +21,7 @@ public interface ActiveDirectorySearchInterface {
         for(String basePath : basePaths){
             membersFound.addAll(getMembers(ctx, group, basePath));
         }
-        testGetAllMembers(ctx, "ou=3SCALE");
+//        testGetAllMembers(ctx, "ou=3SCALE");
         System.out.println(membersFound);
         return membersFound;
     }
@@ -36,6 +36,7 @@ public interface ActiveDirectorySearchInterface {
         try {
             System.out.println("Trying to Fetch Internal Users in " + searchFilter);
             results = searchForUsers("DC=eniig,DC=org",ctx, searchFilter, controls);
+            assert results != null;
             while (results.hasMore()) {
                 SearchResult result = results.next();
                 System.out.println(result.toString());
