@@ -14,9 +14,9 @@ public interface ActiveDirectorySearchInterface {
 
 
     static List<String> getMembersOf3ScaleGroups(DirContext ctx, String group){
-        basePaths.add("OU=Eniig_Faellesfunktioner,DC=eniig,DC=org");
-        basePaths.add("OU=Standard,DC=eniig,DC=org");
-        basePaths.add("OU=Eksterne,DC=eniig,DC=org");
+//        basePaths.add("OU=Eniig_Faellesfunktioner,DC=eniig,DC=org");
+//        basePaths.add("OU=Standard,DC=eniig,DC=org");
+//        basePaths.add("OU=Eksterne,DC=eniig,DC=org");
         basePaths.add("DC=eniig,DC=org");
         List<String> membersFound = new ArrayList<>();
         for(String basePath : basePaths){
