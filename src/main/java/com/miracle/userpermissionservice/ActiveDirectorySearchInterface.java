@@ -17,6 +17,7 @@ public interface ActiveDirectorySearchInterface {
         basePaths.add("OU=Eniig_Faellesfunktioner,DC=eniig,DC=org");
         basePaths.add("OU=Standard,DC=eniig,DC=org");
         basePaths.add("OU=Eksterne,DC=eniig,DC=org");
+        basePaths.add("DC=eniig,DC=org");
         List<String> membersFound = new ArrayList<>();
         for(String basePath : basePaths){
             membersFound.addAll(getMembers(ctx, group, basePath));
